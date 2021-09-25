@@ -1,7 +1,9 @@
 const user_table = require("../models/user_table");
 const User = user_table.User;
 
-exports.create=(req, res) => {
+const userRoot = (req, res) => res.send("welcome to user details");
+
+const create = (req, res) => {
   if (!req.body.username) {
     res.status(400).send({
       message: "Content can not be empty!",
@@ -27,10 +29,7 @@ exports.create=(req, res) => {
     });
 };
 
-exports.findAll = (req, res) => {
-  // const username = req.query.username;
-  // var condition = username ? { username: `%${username}%` } : null;
-
+const findAll = (req, res) => {
   User.findAll()
     .then((result) => {
       res.send(result);
@@ -39,8 +38,13 @@ exports.findAll = (req, res) => {
     .catch((error) => {
       res.status(500).send({
         message:
-        error.message || "Some error occurred while retrieving tutorials.",
+          error.message || "Some error occurred while retrieving tutorials.",
       });
     });
 };
 
+module.exports = {
+  userRoot,
+  create,
+  findAll,
+};
