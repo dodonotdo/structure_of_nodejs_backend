@@ -1,25 +1,19 @@
-const user_table = require("../models/user_table");
-const User = user_table.User;
+const user_details_table = require("../models/user_table");
 
 const userRoot = (req, res) => res.send("welcome to user details");
 
 const create = (req, res) => {
-  if (!req.body.username) {
-    res.status(400).send({
-      message: "Content can not be empty!",
-    });
-    return;
-  }
+
   const user = {
     username: req.body.username,
     password: req.body.password,
     email: req.body.email,
     mobile_no: req.body.mobile_no,
   };
-  User.create(user)
+
+  user_details_table.create(user)
     .then((data) => {
       res.send(data);
-      console.log(data);
     })
     .catch((err) => {
       res.status(500).send({
@@ -27,10 +21,11 @@ const create = (req, res) => {
           err.message || "Some error occurred while creating the Tutorial.",
       });
     });
+    
 };
 
 const findAll = (req, res) => {
-  User.findAll()
+  user_details_table.findAll()
     .then((result) => {
       res.send(result);
       console.log(result);
