@@ -1,8 +1,8 @@
-const user_details_table = require("../models/user_table");
+const user_details_table = require("../models/user_details_table");
 
 const userRoot = (req, res) => res.send("welcome to user details");
 
-const create = (req, res) => {
+const create_user_details = (req, res) => {
 
   const user = {
     username: req.body.username,
@@ -24,11 +24,11 @@ const create = (req, res) => {
     
 };
 
-const findAll = (req, res) => {
+const get_user_details = (req, res) => {
+  
   user_details_table.findAll()
     .then((result) => {
       res.send(result);
-      console.log(result);
     })
     .catch((error) => {
       res.status(500).send({
@@ -40,6 +40,6 @@ const findAll = (req, res) => {
 
 module.exports = {
   userRoot,
-  create,
-  findAll,
+  create_user_details,
+  get_user_details,
 };

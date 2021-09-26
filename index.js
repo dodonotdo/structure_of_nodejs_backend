@@ -15,7 +15,7 @@ app.use(helmet());
 
 // creating tables
 const sequelize = require('./config/db');
-const User = require('./models/user_table');
+const User = require('./models/user_details_table');
 console.log(User);
 sequelize.sync();
 // sequelize.sync({force:true});
