@@ -38,8 +38,23 @@ const get_user_details = (req, res) => {
     });
 };
 
+const get_one_user_details = (req, res) => {
+  
+  user_details_table.findOne({ where: {username: req.body.username}})
+    .then((result) => {
+      res.send(result);
+    })
+    .catch((error) => {
+      res.status(500).send({
+        message:
+          error.message || "Some error occurred while retrieving tutorials.",
+      });
+    });
+};
+
 module.exports = {
   userRoot,
   create_user_details,
   get_user_details,
+  get_one_user_details,
 };

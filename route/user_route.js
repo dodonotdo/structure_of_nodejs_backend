@@ -10,4 +10,8 @@ router.post("/create", user_details.create_user_details);
 
 router.get("/get", user_details.get_user_details);
 
+router.post("/getOne", user_details.get_one_user_details);
+
 module.exports = router;
+
+

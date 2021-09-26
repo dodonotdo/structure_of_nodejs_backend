@@ -2,6 +2,7 @@ const Sequelize = require("sequelize");
 
 const sequelize = new Sequelize("nodejs_backend_demo", "user", "Password@123", {
   host: "localhost",
+  logging: false,
   dialect: "mysql",
   pool: {
     max: 5,
