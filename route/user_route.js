@@ -12,6 +12,10 @@ router.get("/get", user_details.get_user_details);
 
 router.post("/getOne", user_details.get_one_user_details);
 
+router.post("/updatePassword", user_details.update_user_password_details);
+
+
 module.exports = router;
+
 
 

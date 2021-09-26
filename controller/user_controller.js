@@ -1,9 +1,10 @@
 const user_details_table = require("../models/user_details_table");
 
+const cleanObject = require("../library/cleanObject");
+
 const userRoot = (req, res) => res.send("welcome to user details");
 
 const create_user_details = (req, res) => {
-
   const user = {
     username: req.body.username,
     password: req.body.password,
@@ -11,22 +12,21 @@ const create_user_details = (req, res) => {
     mobile_no: req.body.mobile_no,
   };
 
-  user_details_table.create(user)
-    .then((data) => {
-      res.send(data);
-    })
+  let create_users = user_details_table.create(user);
+
+  create_users
+    .then((data) => res.send(data))
     .catch((err) => {
       res.status(500).send({
         message:
-          err.message || "Some error occurred while creating the Tutorial.",
+          err.message || "Some error occurred while creating the users.",
       });
     });
-    
 };
 
-const get_user_details = (req, res) => {
-  
-  user_details_table.findAll()
+const get_user_details = async (req, res) => {
+  await user_details_table
+    .findAll()
     .then((result) => {
       res.send(result);
     })
@@ -40,10 +40,12 @@ const get_user_details = (req, res) => {
 
 const get_one_user_details = (req, res) => {
   
-  user_details_table.findOne({ where: {username: req.body.username}})
-    .then((result) => {
-      res.send(result);
-    })
+  let user_details = user_details_table.findOne({
+    where: { username: req.body.username },
+  });
+
+  user_details
+    .then((result) => res.send(result))
     .catch((error) => {
       res.status(500).send({
         message:
@@ -52,9 +54,27 @@ const get_one_user_details = (req, res) => {
     });
 };
 
+const update_user_password_details = (req, res) => {
+  
+  const update_details = {
+    password: req.body.password,
+    mobile_no: req.body.mobile_no,
+    email: req.body.email,
+  };
+
+  let update_password = user_details_table.update(cleanObject(update_details), {
+    where: { username: req.body.username },
+  });
+
+  update_password
+    .then((result) => res.send(result))
+    .catch((error) => res.send(error));
+};
+
 module.exports = {
   userRoot,
   create_user_details,
   get_user_details,
   get_one_user_details,
+  update_user_password_details,
 };
