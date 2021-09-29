@@ -4,7 +4,7 @@ const express = require("express");
 
 const middleware = require("../middleware/middleware");
 
-const schema = require("../library/schema");
+const schema = require("../schemas/schema");
 
 const router = express.Router();
 

@@ -2,25 +2,9 @@ const user_details_table = require("../models/user_details_table");
 
 const cleanObject = require("../library/cleanObject");
 
-const Joi = require('joi')
-
 const userRoot = (req, res) => res.send("welcome to user details");
 
 const create_user_details = (req, res) => {
-
-  // const schema = Joi.object({ 
-  //   user: Joi.string() .min(6) .required(),
-  //   email: Joi.string() .min(6) .required() .email(),
-  //   password: Joi.string() .min(6) .required(),
-  //   mobile_no: Joi.number() .min(10) .required() 
-  // });
-    
-  //   const validation = schema.validate(req.body);
-  //   if (!validation.error) {
-  //     res.send(validation.value);
-  //   }
- 
-
   const user = {
     username: req.body.user,
     password: req.body.password,
