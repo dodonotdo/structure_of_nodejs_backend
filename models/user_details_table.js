@@ -2,14 +2,14 @@ const Sequelize = require("sequelize");
 const sequelize = require("../config/db");
 
 const user_details_table = sequelize.define("user_details", {
-  user_id: {
+  uid: {
     type: Sequelize.INTEGER,
     autoIncrement: true,
     allowNull: false,
     primaryKey: true,
   },
 
-  username: {
+  user: {
     type: Sequelize.STRING,
     allowNull: false,
   },
@@ -24,7 +24,7 @@ const user_details_table = sequelize.define("user_details", {
     allowNull: false,
   },
 
-  mobile_no: {
+  mobile: {
     type: Sequelize.BIGINT(11),
     allowNull: false,
   },

@@ -6,10 +6,10 @@ const userRoot = (req, res) => res.send("welcome to user details");
 
 const create_user_details = (req, res) => {
   const user = {
-    username: req.body.user,
+    user: req.body.user,
     password: req.body.password,
     email: req.body.email,
-    mobile_no: req.body.mobile_no,
+    mobile: req.body.mobile,
   };
 
   let create_users = user_details_table.create(user);
@@ -38,8 +38,9 @@ const get_user_details = async (req, res) => {
 };
 
 const get_one_user_details = (req, res) => {
+  let user = req.body.user
   let user_details = user_details_table.findOne({
-    where: { username: req.body.username },
+    where: { user: user },
   });
 
   user_details
@@ -55,12 +56,12 @@ const get_one_user_details = (req, res) => {
 const update_user_password_details = (req, res) => {
   const update_details = {
     password: req.body.password,
-    mobile_no: req.body.mobile_no,
+    mobile: req.body.mobile,
     email: req.body.email,
   };
 
   let update_password = user_details_table.update(cleanObject(update_details), {
-    where: { username: req.body.username },
+    where: { user: req.body.user },
   });
 
   update_password
