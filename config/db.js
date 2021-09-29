@@ -12,13 +12,9 @@ const sequelize = new Sequelize("nodejs_backend_demo", "user", "Password@123", {
   },
 });
 
-sequelize
-  .authenticate()
-  .then(() => {
-    console.log("Connection has been established successfully.");
-  })
-  .catch((err) => {
-    console.error("Unable to connect to the database:", err);
-  });
+const auth = sequelize.authenticate();
+auth
+  .then(() => console.log("Connection has been established successfully."))
+  .catch((err) => console.error("Unable to connect to the database:", err));
 
 module.exports = sequelize;

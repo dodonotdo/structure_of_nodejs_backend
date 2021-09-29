@@ -5,12 +5,11 @@ const schema = {
     user: Joi.string().min(6).required(),
     email: Joi.string().min(6).email().required(),
     password: Joi.string().min(6).required(),
-    mobile_no: Joi.number().min(10).required(),
+    mobile: Joi.number().min(10).required(),
   }),
   get_one_user_details: Joi.object({
-    user: Joi.string().min(6).required()
-  })
+    user: Joi.string().min(6).required(),
+  }),
 };
-module.exports = {
-  schema,
-};
+
+module.exports = schema;
