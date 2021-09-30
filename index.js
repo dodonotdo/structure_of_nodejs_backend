@@ -26,6 +26,12 @@ app.get("/", (req, res) => {
   res.send("Welcome to nodejs application!");
 });
 
+app.get("/healthz", (req, res) => {
+  res.send({
+    statusCode: 200,
+    message: "Running state"
+  });
+});
 
 const PORT = process.env.PORT || 9000;
 app.listen(PORT, () => {

@@ -5,6 +5,29 @@ const cleanObject = require("../library/cleanObject");
 const userRoot = (req, res) => res.send("user details api root");
 
 const create_user_details = (req, res) => {
+  async function produce() {
+    amqp.connect("amqp://localhost", (err, connection) => {
+      if (err) {
+        throw err;
+      }
+      connection.createChannel((error, channel) => {
+        if (error) {
+          throw error;
+        }
+        var queue = "hello";
+        var msg = JSON.stringify(req.body)
+
+        channel.assertQueue(queue, {
+          durable: false,
+        });
+        channel.sendToQueue(queue, Buffer.from(msg));
+
+        console.log(" [x] Sent %s", msg);
+      });
+    });
+  }
+  produce();
+
   let user = res.locals.data;
   let create_users = user_details_table.create(user);
   create_users
