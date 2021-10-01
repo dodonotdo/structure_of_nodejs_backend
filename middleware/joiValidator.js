@@ -1,6 +1,6 @@
 const joiValidator = (schema) => {
   return (req, res, next) => {
-    const { error, result } = schema.validate(req.body);
+    const { error } = schema.validate(req.body);
     const valid = error == null;
 
     if (valid) {

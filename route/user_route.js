@@ -28,7 +28,12 @@ router.post(
 
 router.post(
   "/updatePassword", 
+  joiValidator(schema.update_user_password_details),
   user_details.update_user_password_details
 );
 
+router.get(
+  "/jsontoexcel",
+  user_details.json_to_excel
+)
 module.exports = router;

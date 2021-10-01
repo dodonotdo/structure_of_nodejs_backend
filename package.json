@@ -7,13 +7,22 @@
     "amqplib": "^0.8.0",
     "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
+    "download": "^8.0.0",
+    "excel": "^1.0.1",
+    "excel4node": "^1.7.2",
+    "exceljs": "^4.3.0",
+    "export": "^0.1.337",
     "express": "^4.17.1",
+    "file": "^0.2.2",
     "helmet": "^4.6.0",
+    "is-json": "^2.0.1",
     "joi": "^17.4.2",
+    "json2xls": "^0.1.2",
     "morgan": "^1.10.0",
     "mysql": "^2.18.1",
     "mysql2": "^2.3.0",
-    "sequelize": "^6.6.5"
+    "sequelize": "^6.6.5",
+    "xlsx": "^0.17.2"
   },
   "devDependencies": {},
   "scripts": {
