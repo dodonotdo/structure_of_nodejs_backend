@@ -4,10 +4,7 @@ const user_details = require("../controller/user_controller");
 const joiValidator = require("../middleware/joiValidator");
 const schema = require("../schemas/joiSchemas");
 
-router.get(
-  "/", 
-  user_details.userRoot
-);
+router.get("/", user_details.userRoot);
 
 router.post(
   "/create",
@@ -15,10 +12,7 @@ router.post(
   user_details.create_user_details
 );
 
-router.get(
-  "/get", 
-  user_details.get_user_details
-);
+router.get("/get", user_details.get_user_details);
 
 router.post(
   "/getOne",
@@ -27,13 +21,10 @@ router.post(
 );
 
 router.post(
-  "/updatePassword", 
+  "/updatePassword",
   joiValidator(schema.update_user_password_details),
   user_details.update_user_password_details
 );
 
-router.get(
-  "/jsontoexcel",
-  user_details.json_to_excel
-)
+router.get("/jsontoexcel", user_details.convert_json_to_excel);
 module.exports = router;

@@ -1,9 +1,6 @@
 const user_details_table = require("../models/user_details_table");
-// var amqp = require("amqplib/callback_api");
 const cleanObject = require("../library/cleanObject");
-// const XLSX = require("xlsx");
 const excel = require("exceljs");
-
 const userRoot = (req, res) => res.send("user details api root");
 
 const create_user_details = (req, res) => {
@@ -28,7 +25,7 @@ const get_user_details = async (req, res, next) => {
     .catch((error) => {
       res.status(500).send({
         message:
-          error.message || "Some error occurred while retrieving tutorials.",
+          error.message || "Some error occurred while retrieving userdetails.",
       });
     });
   next();
@@ -45,7 +42,7 @@ const get_one_user_details = (req, res) => {
     .catch((error) => {
       res.status(500).send({
         message:
-          error.message || "Some error occurred while retrieving tutorials.",
+          error.message || "Some error occurred while retrieving userdetails.",
       });
     });
 };
@@ -66,12 +63,10 @@ const update_user_password_details = (req, res) => {
     .catch((error) => res.send(error));
 };
 
-const json_to_excel = (req, res) => {
+const convert_json_to_excel = (req, res) => {
   user_details_table.findAll().then((result0) => {
     let one = [];
     result0.forEach((item) => {
-      // const data = item.dataValues;
-      // console.log(data);
       one.push({
         uid: item.uid,
         user: item.user,
@@ -86,27 +81,49 @@ const json_to_excel = (req, res) => {
 
     worksheet.columns = [
       { header: "U_id", key: "uid", width: 5 },
-      { header: "Username", key: "user", width: 25 },
+      { header: "Username", key: "user", width: 0 },
       { header: "Password", key: "password", width: 25 },
-      { header: "Email_Id", key: "email", width: 10 },
-      { header: "Mobile_No", key: "mobile", width: 10 },
+      { header: "Email_id", key: "email", width: 20 },
+      { header: "Mobile_No", key: "mobile", width: 20 },
     ];
+    worksheet.getRow(1).font = { bold: true };
+
+    worksheet.autoFilter = "A1:E1";
+
+    // headers style in excel
+    worksheet.eachRow((row, rowNumber) => {
+      row.eachCell((cell, colNumber) => {
+        if (rowNumber == 1) {
+          //set the background of header row
+          cell.fill = {
+            type: "pattern",
+            pattern: "solid",
+            fgColor: { argb: "f5b914" },
+          };
+        }
+        // Set border of each cell
+        cell.border = {
+          top: { style: "thin" },
+          left: { style: "thin" },
+          bottom: { style: "thin" },
+          right: { style: "thin" },
+        };
+      });
+    });
 
     // // Add Array Rows
-    console.log(worksheet.addRows(one));
+    worksheet.addRows(one);
 
     res.setHeader(
       "Content-Type",
       "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
     );
 
-    res.setHeader(
-      "Content-Disposition",
-      "attachment; filename=" + "user_details.xlsx"
-    );
+    var excelOutput = Date.now() + ".xlsx";
+    res.setHeader("Content-Disposition", "attachment; filename=" + excelOutput);
 
-    return workbook.xlsx.write(res).then(function () {
-      res.status(200).end();
+    return workbook.xlsx.write(res).then(() => {
+      res.status(200).end("The download is completed");
     });
   });
 };
@@ -117,5 +134,5 @@ module.exports = {
   get_user_details,
   get_one_user_details,
   update_user_password_details,
-  json_to_excel,
+  convert_json_to_excel,
 };
