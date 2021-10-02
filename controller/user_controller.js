@@ -1,6 +1,8 @@
 const user_details_table = require("../models/user_details_table");
 const cleanObject = require("../library/cleanObject");
 const excel = require("exceljs");
+const xlsx = require("xlsx");
+
 const userRoot = (req, res) => res.send("user details api root");
 
 const create_user_details = (req, res) => {
@@ -67,64 +69,24 @@ const convert_json_to_excel = (req, res) => {
   user_details_table.findAll().then((result0) => {
     let one = [];
     result0.forEach((item) => {
-      one.push({
-        uid: item.uid,
-        user: item.user,
-        password: item.password,
-        email: item.email,
-        mobile: item.mobile,
-      });
+      one.push(item.dataValues);
     });
-
-    let workbook = new excel.Workbook();
-    let worksheet = workbook.addWorksheet("user_details");
-
-    worksheet.columns = [
-      { header: "U_id", key: "uid", width: 5 },
-      { header: "Username", key: "user", width: 0 },
-      { header: "Password", key: "password", width: 25 },
-      { header: "Email_id", key: "email", width: 20 },
-      { header: "Mobile_No", key: "mobile", width: 20 },
-    ];
-    worksheet.getRow(1).font = { bold: true };
-
-    worksheet.autoFilter = "A1:E1";
-
-    // headers style in excel
-    worksheet.eachRow((row, rowNumber) => {
-      row.eachCell((cell, colNumber) => {
-        if (rowNumber == 1) {
-          //set the background of header row
-          cell.fill = {
-            type: "pattern",
-            pattern: "solid",
-            fgColor: { argb: "f5b914" },
-          };
-        }
-        // Set border of each cell
-        cell.border = {
-          top: { style: "thin" },
-          left: { style: "thin" },
-          bottom: { style: "thin" },
-          right: { style: "thin" },
-        };
-      });
-    });
-
-    // // Add Array Rows
-    worksheet.addRows(one);
-
+    
+    let workbook=xlsx.utils.book_new();
+    let worksheet=xlsx.utils.json_to_sheet(one);
+    
+    xlsx.utils.book_append_sheet(workbook,worksheet, "su");
+    xlsx.write(workbook,{bookType:"xlsx", type:"buffer"});
+    xlsx.write(workbook,{bookType:"xlsx", type:"binary"});
+    var exceloutput = Date.now() + ".xlsx";
     res.setHeader(
       "Content-Type",
       "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
     );
+    xlsx.writeFile(workbook, exceloutput);
 
-    var excelOutput = Date.now() + ".xlsx";
-    res.setHeader("Content-Disposition", "attachment; filename=" + excelOutput);
 
-    return workbook.xlsx.write(res).then(() => {
-      res.status(200).end("The download is completed");
-    });
+  
   });
 };
 
