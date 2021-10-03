@@ -1,7 +1,6 @@
 const user_details_table = require("../models/user_details_table");
 const cleanObject = require("../library/cleanObject");
 const excel = require("exceljs");
-const xlsx = require("xlsx");
 
 const userRoot = (req, res) => res.send("user details api root");
 
@@ -66,27 +65,34 @@ const update_user_password_details = (req, res) => {
 };
 
 const convert_json_to_excel = (req, res) => {
-  user_details_table.findAll().then((result0) => {
-    let one = [];
-    result0.forEach((item) => {
-      one.push(item.dataValues);
-    });
+  user_details_table.findAll().then((rowsDatas) => {
+    let rows = [];
+    let columns = [];
+    rowsDatas.forEach((data) => rows.push(data.dataValues));
+
+    let workbook = new excel.Workbook();
+    let worksheet = workbook.addWorksheet("Tutorials");
+    let value = Object.keys(rows[0]);
+
+    for (let index = 0; index < value.length; index++) {
+      let objectCreation = { header: value[index], key: value[index] };
+      columns.push(objectCreation);
+    }
+    worksheet.columns = columns;
+    worksheet.addRows(rows);
     
-    let workbook=xlsx.utils.book_new();
-    let worksheet=xlsx.utils.json_to_sheet(one);
-    
-    xlsx.utils.book_append_sheet(workbook,worksheet, "su");
-    xlsx.write(workbook,{bookType:"xlsx", type:"buffer"});
-    xlsx.write(workbook,{bookType:"xlsx", type:"binary"});
-    var exceloutput = Date.now() + ".xlsx";
     res.setHeader(
       "Content-Type",
       "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
     );
-    xlsx.writeFile(workbook, exceloutput);
+    res.setHeader(
+      "Content-Disposition",
+      "attachment; filename=" + "tutorials.xlsx"
+    );
 
-
-  
+    return workbook.xlsx.write(res).then(function () {
+      res.status(200).end();
+    });
   });
 };
 
