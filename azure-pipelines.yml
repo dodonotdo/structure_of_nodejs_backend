@@ -1,0 +1,19 @@
+# Default pipeline variables
+  eq(variables['Build.SourceBranch'], 'refs/heads/main')
+and(succeeded(), eq(variables['Build.id'], 'refs/heads/main'))
+and(succeeded(), ne(variables['Build.queuedby'], 'refs/heads/main'))
+and(always(), eq(variables['Build.Reason'], 'Schedule'))
+and(failed(), eq(variables['Build.Reason'], 'Schedule'))
+condition: eq(variables['System.debug'], 'true')
+
+or(eq())
+eq()
+nq(xxx, yyy)
+
+AzureDevops Service
+
+Git
+TFVC (on-prom values)
+
+    and(in(dependencies.a.result, 'Succeeded', 'SucceededWithIssues', 'Skipped'),
+        in(dependencies.b.result, 'Succeeded', 'SucceededWithIssues', 'Skipped'))
