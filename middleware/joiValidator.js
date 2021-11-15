@@ -2,7 +2,6 @@ const joiValidator = (schema) => {
   return (req, res, next) => {
     const { error } = schema.validate(req.body);
     const valid = error == null;
-
     if (valid) {
       res.locals.data = req.body;
       next();

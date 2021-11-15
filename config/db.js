@@ -1,6 +1,6 @@
 const Sequelize = require("sequelize");
 
-const sequelize = new Sequelize("nodejs_backend_demo", "user", "Password@123", {
+const sequelize = new Sequelize("nodejs_backend_demo", "user", "", {
   host: "localhost",
   logging: false,
   dialect: "mysql",
@@ -18,7 +18,3 @@ auth
   .catch((err) => console.error("Unable to connect to the database:", err));
 
 module.exports = sequelize;
-
-// ywuasnaxqaot6hyiz5bx6uk2yg6sqkt2qgbnjcj57vxra3otjxeq
-
-// montfort.thomas@htcindia.com
